@@ -1,46 +1,111 @@
 return {
-	"williamboman/mason.nvim",
-	dependencies = {
-		"williamboman/mason-lspconfig.nvim",
-		"WhoIsSethDaniel/mason-tool-installer.nvim",
-	},
-	config = function()
-		-- import mason
-		local mason = require("mason")
+  "williamboman/mason.nvim",
+  dependencies = {
+    "williamboman/mason-lspconfig.nvim",
+    "WhoIsSethDaniel/mason-tool-installer.nvim",
+    "neovim/nvim-lspconfig",
+    "saghen/blink.cmp",
+  },
+  config = function()
+    local mason = require("mason")
+    mason.setup({
+      ui = {
+        icons = {
+          package_installed = "✓",
+          package_pending = "➜",
+          package_uninstalled = "✗",
+        },
+      },
+    })
 
-		-- import mason-lspconfig
-		local mason_lspconfig = require("mason-lspconfig")
+    local lspconfig = require("lspconfig")
 
-		local mason_tool_installer = require("mason-tool-installer")
+    ---@diagnostic disable:missing-fields
+    ---@type table<string, lspconfig.Config>
+    local server_configs = {
+      intelephense = {
+        settings = {
+          intelephense = {
+            files = {
+              maxSize = 9000000,
+            },
+          },
+        },
+      },
 
-		-- enable mason and configure icons
-		mason.setup({
-			ui = {
-				icons = {
-					package_installed = "✓",
-					package_pending = "➜",
-					package_uninstalled = "✗",
-				},
-			},
-		})
+      biome = {
+        root_dir = lspconfig.util.root_pattern("biome.json"),
+        single_file_support = false,
+      },
 
-		mason_lspconfig.setup({
-			-- list of servers for mason to install
-			ensure_installed = {
-				"tsserver",
-				"html",
-				"cssls",
-				"tailwindcss",
-				"lua_ls",
-			},
-		})
+      eslint = {
+        settings = {
+          useFlatConfig = true,
+        },
+      },
 
-		mason_tool_installer.setup({
-			ensure_installed = {
-				"prettier", -- prettier formatter
-				"stylua", -- lua formatter
-				"eslint",
-			},
-		})
-	end,
+      lua_ls = {
+        settings = {
+          Lua = {
+            -- make the language server recognize "vim" global
+            diagnostics = {
+              globals = { "vim" },
+            },
+            completion = {
+              callSnippet = "Replace",
+            },
+          },
+        },
+      },
+
+      ["ts_ls"] = {
+        init_options = {
+          plugins = {
+            {
+              name = "@vue/typescript-plugin",
+              location = "/home/gabryjiel/.nvm/versions/node/v20.14.0/lib/node_modules/@vue/typescript-plugin",
+              languages = { "javascript", "typescript", "vue" },
+            },
+          },
+        },
+        filetypes = { "javascript", "typescript", "vue", "typescriptreact", "javascriptreact" },
+      },
+    }
+
+    local mason_lspconfig = require("mason-lspconfig")
+    mason_lspconfig.setup({
+      automatic_installation = false,
+      ensure_installed = {
+        "cssls",
+        "eslint",
+        "html",
+        "jsonls",
+        "gopls",
+        "lua_ls",
+        "cssls",
+        "intelephense",
+        "ts_ls",
+        -- "volar",
+      },
+      handlers = {
+        function(server)
+          local server_config = server_configs[server]
+
+          if server_config == nil then server_config = {} end
+
+          server_config.capabilities = require("blink.cmp").get_lsp_capabilities(server_config.capabilities)
+          lspconfig[server].setup(server_config)
+        end,
+      },
+    })
+
+    local mason_tool_installer = require("mason-tool-installer")
+    mason_tool_installer.setup({
+      ensure_installed = {
+        "prettier", -- prettier formatter
+        "stylua", -- lua formatter
+        "eslint",
+      },
+    })
+  end,
 }

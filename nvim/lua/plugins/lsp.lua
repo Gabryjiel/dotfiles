@@ -2,16 +2,6 @@ return {
   {
     -- LSP Configuration & Plugins
     "neovim/nvim-lspconfig",
-    dependencies = {
-      -- Automatically install LSPs to stdpath for neovim
-      "williamboman/mason.nvim",
-      "williamboman/mason-lspconfig.nvim",
-
-      -- Useful status updates for LSP
-      -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
-      { "j-hui/fidget.nvim", opts = {} },
-      "saghen/blink.cmp",
-    },
     config = function()
       vim.api.nvim_create_autocmd("LspAttach", {
         group = vim.api.nvim_create_augroup("UserLspConfig", {}),
@@ -57,11 +47,6 @@ return {
         end,
       })
 
-      local lspconfig = require("lspconfig")
-      local mason_lspconfig = require("mason-lspconfig")
-
-      local capabilities = require("blink.cmp").get_lsp_capabilities()
-
       -- Change the Diagnostic symbols in the sign column (gutter)
       -- (not in youtube nvim video)
       local signs = { Error = " ", Warn = " ", Hint = "󰠠 ", Info = " " }
@@ -69,83 +54,6 @@ return {
         local hl = "DiagnosticSign" .. type
         vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
       end
-
-      mason_lspconfig.setup({
-        ensure_installed = {
-          "cssls",
-          "eslint",
-          "html",
-          "htmx",
-          "jsonls",
-          "gopls",
-          "lua_ls",
-          "cssls",
-          "intelephense",
-          "ts_ls",
-          -- "volar",
-        },
-        handlers = {
-          function(server) lspconfig[server].setup({ capabilities = capabilities }) end,
-          intelephense = function()
-            lspconfig.intelephense.setup({
-              capabilities = capabilities,
-              settings = {
-                intelephense = {
-                  files = {
-                    maxSize = 9000000,
-                  },
-                },
-              },
-            })
-          end,
-          biome = function()
-            lspconfig.biome.setup({
-              capabilities = capabilities,
-              root_dir = lspconfig.util.root_pattern("biome.json"),
-              single_file_support = false,
-            })
-          end,
-          eslint = function()
-            lspconfig.eslint.setup({
-              capabilities = capabilities,
-              settings = {
-                useFlatConfig = true,
-              },
-            })
-          end,
-          ["lua_ls"] = function()
-            lspconfig["lua_ls"].setup({
-              capabilities = capabilities,
-              settings = {
-                Lua = {
-                  -- make the language server recognize "vim" global
-                  diagnostics = {
-                    globals = { "vim" },
-                  },
-                  completion = {
-                    callSnippet = "Replace",
-                  },
-                },
-              },
-            })
-          end,
-          ["ts_ls"] = function()
-            lspconfig["ts_ls"].setup({
-              capabilities = capabilities,
-              init_options = {
-                plugins = {
-                  {
-                    name = "@vue/typescript-plugin",
-                    location = "/home/gabryjiel/.nvm/versions/node/v20.14.0/lib/node_modules/@vue/typescript-plugin",
-                    languages = { "javascript", "typescript", "vue" },
-                  },
-                },
-              },
-              filetypes = { "javascript", "typescript", "vue", "typescriptreact", "javascriptreact" },
-            })
-          end,
-        },
-      })
     end,
   },
 }
