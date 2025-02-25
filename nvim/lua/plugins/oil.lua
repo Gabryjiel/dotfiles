@@ -4,7 +4,16 @@ return {
   "stevearc/oil.nvim",
   ---@module 'oil'
   ---@type oil.SetupOpts
-  opts = {},
+  opts = {
+    columns = {
+      "size",
+      "mtime",
+      "icon",
+    },
+    view_options = {
+      show_hidden = true,
+    },
+  },
   -- Optional dependencies
   dependencies = { { "echasnovski/mini.icons", opts = {} } },
   -- dependencies = { "nvim-tree/nvim-web-devicons" }, -- use if you prefer nvim-web-devicons
@@ -12,5 +21,6 @@ return {
   lazy = false,
   keys = {
     { "-", "<cmd>Oil<cr>", desc = "Open parent directory in oil.nvim" },
+    { "<leader>-", function() require("oil").open_float() end, desc = "Open floating parent directory in oil.nvim" },
   },
 }
