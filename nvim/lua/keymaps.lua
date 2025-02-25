@@ -40,5 +40,3 @@ vim.keymap.set(
   [[(&hls && v:hlsearch ? ':nohls' : ':set hls')."\n" <BAR> redraw<CR>]],
   { silent = true, expr = true, desc = "Toggle search highlighting" }
 )
-
-vim.keymap.set("n", "-", "<cmd>Ex<cr>", { desc = "Open parent directory" })
