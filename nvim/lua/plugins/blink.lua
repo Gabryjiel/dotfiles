@@ -3,7 +3,7 @@
 return {
   "saghen/blink.cmp",
   version = "*",
-  dependencies = { "xzbdmw/colorful-menu.nvim" },
+  dependencies = { "xzbdmw/colorful-menu.nvim", "rafamadriz/friendly-snippets" },
 
   ---@module 'blink.cmp'
   ---@type blink.cmp.Config
@@ -25,6 +25,8 @@ return {
     },
 
     signature = { enabled = true },
+
+    snippets = { preset = "default" },
 
     completion = {
       menu = {
