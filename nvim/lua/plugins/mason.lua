@@ -63,8 +63,9 @@ return {
           plugins = {
             {
               name = "@vue/typescript-plugin",
-              location = "/home/gabryjiel/.nvm/versions/node/v20.14.0/lib/node_modules/@vue/typescript-plugin",
-              languages = { "javascript", "typescript", "vue" },
+              location = vim.fn.stdpath("data")
+                .. "/mason/packages/vue-language-server/node_modules/@vue/language-server",
+              languages = { "vue" },
             },
           },
         },
@@ -85,14 +86,11 @@ return {
         "cssls",
         "intelephense",
         "ts_ls",
-        -- "volar",
+        "volar",
       },
       handlers = {
         function(server)
-          local server_config = server_configs[server]
-
-          if server_config == nil then server_config = {} end
-
+          local server_config = server_configs[server] or {}
           server_config.capabilities = require("blink.cmp").get_lsp_capabilities(server_config.capabilities)
           lspconfig[server].setup(server_config)
         end,
