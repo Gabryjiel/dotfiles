@@ -1,4 +1,4 @@
-# ~/.bashrc: executed by bash(1) for non-login shells.
+
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
 
@@ -171,4 +171,14 @@ else
         bind '"\er":'
         bind '"\e^":'
 fi
+}
+
+# View git repos in ~/sandbox
+ff() {
+  local selected_repo
+  selected_repo=$(fd -t d -H "^\.git$" ~/ -x dirname {} | fzf --ansi --preview "ls -la {}")
+
+  if [[ -n "$selected_repo" ]]; then
+    cd "$selected_repo" && nvim .
+  fi
 }
