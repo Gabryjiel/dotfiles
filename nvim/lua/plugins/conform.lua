@@ -25,6 +25,7 @@ return {
         lua = { "stylua" },
         python = { "isort", "black" },
         php = { "prettier" },
+        vue = { "prettier" },
       },
       format_after_save = {
         lsp_fallback = true,
