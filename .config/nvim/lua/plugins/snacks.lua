@@ -14,8 +14,6 @@ return {
       },
       ---@type snacks.indent.Scope.Config
       scope = {
-        underline = true,
-
         hl = {
           "RainbowDelimiterRed",
           "RainbowDelimiterYellow",

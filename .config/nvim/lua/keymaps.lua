@@ -12,7 +12,8 @@ vim.keymap.set("n", "]d", vim.diagnostic.goto_next, { desc = "Go to next diagnos
 vim.keymap.set("n", "<leader>q", vim.diagnostic.open_float, { desc = "Open floating diagnostic message" })
 vim.keymap.set("n", "<leader>Q", vim.diagnostic.setloclist, { desc = "Open diagnostics list" })
 
-vim.keymap.set("n", "<leader>=", vim.lsp.buf.hover, { desc = "Show variable" })
+vim.keymap.set("n", "<F2>", vim.lsp.buf.rename, { desc = "Rename" })
+
 -- Disable arrow keys
 for _, mode in pairs({ "n", "i", "v", "x" }) do
   for _, key in pairs({ "<Up>", "<Down>", "<Left>", "<Right>" }) do

@@ -1,7 +1,15 @@
 {
   "layer": "top",
-  "modules-left": ["cpu", "memory", "disk", "hyprland/workspaces"],
-  "modules-center": ["hyprland/window", "hyprland/submap"],
+  "modules-left": [
+    "cpu",
+    "memory",
+    "disk",
+    "hyprland/workspaces"
+  ],
+  "modules-center": [
+    "hyprland/window",
+    "hyprland/submap"
+  ],
   "modules-right": [
     "tray",
     "backlight",
@@ -11,7 +19,6 @@
     "custom/launcher",
     "custom/power",
   ],
-
   "hyprland/workspaces": {
     "format": "{id}",
     "format-icons": {
@@ -23,7 +30,6 @@
     },
     "all-outputs": false, // recommended
   },
-
   "hyprland/window": {
     "separate-outputs": true,
     "format": "{title}",
@@ -31,17 +37,19 @@
       "(.*) - Brave": "Brave Browser",
     },
   },
-
   "wireplumber": {
     "tooltip": false,
     "scroll-step": 5,
     "format": "{icon} {volume}%",
     "format-muted": "󰝟",
-    "format-icons": ["", "", " "],
+    "format-icons": [
+      "",
+      "",
+      " "
+    ],
     "on-click": "hyprctl dispatch -- exec [float] uwsm app -- pwvucontrol",
     "on-click-right": "pactl set-sink-mute @DEFAULT_SINK@ toggle",
   },
-
   "river/tags": {
     "num-tags": 6,
   },
@@ -70,7 +78,13 @@
     "format-charging": " {capacity}%",
     "format-plugged": " {capacity}%",
     "format-alt": "{time} {icon}",
-    "format-icons": ["", "", "", "", ""],
+    "format-icons": [
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
   },
   "tray": {
     "show-passive-items": true,
@@ -78,7 +92,7 @@
     "spacing": 10,
   },
   "clock": {
-    "format": "  {:%H:%M %d.%m.%Y}",
+    "format": "  {:%H:%M     %d.%m.%Y}",
     "actions": {
       "on-click-right": "mode",
     },
